@@ -70,7 +70,7 @@ With all tests passing and crontab setup, Sentinel will stay in sync with diabas
 Configuration is done via environment variables. Example:
 
 ```sh
-$ RPCUSER=diabase RPCPASSWORD=password RPCHOST=127.0.0.1 RPCPORT=19998 ./venv/bin/python bin/sentinel.py
+$ RPCUSER=diabase RPCPASSWORD=password RPCHOST=127.0.0.1 RPCPORT=17675 ./venv/bin/python bin/sentinel.py
 ```
 
 A path to a `diabase.conf` file can be specified in `sentinel.conf`:

@@ -45,7 +45,7 @@ class DiabaseConfig:
                 network = "testnet"
 
         # standard Diabase defaults...
-        default_port = 9998 if (network == "mainnet") else 19998
+        default_port = 7675 if (network == "mainnet") else 17675
 
         # use default port for network if not specified in diabase.conf
         if not ("port" in creds):
