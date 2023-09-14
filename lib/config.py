@@ -3,31 +3,31 @@
 """
 import sys
 import os
-from dash_config import DashConfig
+from diabase_config import DiabaseConfig
 
 default_sentinel_config = os.path.normpath(
     os.path.join(os.path.dirname(__file__), "../sentinel.conf")
 )
 sentinel_config_file = os.environ.get("SENTINEL_CONFIG", default_sentinel_config)
-sentinel_cfg = DashConfig.tokenize(sentinel_config_file)
+sentinel_cfg = DiabaseConfig.tokenize(sentinel_config_file)
 sentinel_version = "1.7.3"
 
 
-def get_dash_conf():
+def get_diabase_conf():
     if sys.platform == "win32":
-        dash_conf = os.path.join(os.getenv("APPDATA"), "DiabaseCore/diabase.conf")
+        diabase_conf = os.path.join(os.getenv("APPDATA"), "DiabaseCore/diabase.conf")
     else:
         home = os.environ.get("HOME")
 
-        dash_conf = os.path.join(home, ".diabasecore/diabase.conf")
+        diabase_conf = os.path.join(home, ".diabasecore/diabase.conf")
         if sys.platform == "darwin":
-            dash_conf = os.path.join(
+            diabase_conf = os.path.join(
                 home, "Library/Application Support/DiabaseCore/diabase.conf"
             )
 
-    dash_conf = sentinel_cfg.get("dash_conf", dash_conf)
+    diabase_conf = sentinel_cfg.get("diabase_conf", diabase_conf)
 
-    return dash_conf
+    return diabase_conf
 
 
 def get_rpchost():
@@ -87,6 +87,6 @@ def get_db_conn():
     return db
 
 
-dash_conf = get_dash_conf()
+diabase_conf = get_diabase_conf()
 rpc_host = get_rpchost()
 db = get_db_conn()

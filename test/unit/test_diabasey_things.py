@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.normpath(os.path.join(os.path.dirname(__file__), "../../lib")))
 
 
-def valid_dash_address(network="mainnet"):
+def valid_diabase_address(network="mainnet"):
     return (
         "yYe8KwyaUu5YswSYmB3q3ryx8XTUu9y7Ui"
         if (network == "testnet")
@@ -13,7 +13,7 @@ def valid_dash_address(network="mainnet"):
     )
 
 
-def invalid_dash_address(network="mainnet"):
+def invalid_diabase_address(network="mainnet"):
     return (
         "yYe8KwyaUu5YswSYmB3q3ryx8XTUu9y7Uj"
         if (network == "testnet")
@@ -73,34 +73,34 @@ def mn_status_bad():
 # ========================================================================
 
 
-def test_valid_dash_address():
-    from dashlib import is_valid_dash_address
+def test_valid_diabase_address():
+    from diabaselib import is_valid_diabase_address
 
-    main = valid_dash_address()
-    test = valid_dash_address("testnet")
+    main = valid_diabase_address()
+    test = valid_diabase_address("testnet")
 
-    assert is_valid_dash_address(main) is True
-    assert is_valid_dash_address(main, "mainnet") is True
-    assert is_valid_dash_address(main, "testnet") is False
+    assert is_valid_diabase_address(main) is True
+    assert is_valid_diabase_address(main, "mainnet") is True
+    assert is_valid_diabase_address(main, "testnet") is False
 
-    assert is_valid_dash_address(test) is False
-    assert is_valid_dash_address(test, "mainnet") is False
-    assert is_valid_dash_address(test, "testnet") is True
+    assert is_valid_diabase_address(test) is False
+    assert is_valid_diabase_address(test, "mainnet") is False
+    assert is_valid_diabase_address(test, "testnet") is True
 
 
-def test_invalid_dash_address():
-    from dashlib import is_valid_dash_address
+def test_invalid_diabase_address():
+    from diabaselib import is_valid_diabase_address
 
-    main = invalid_dash_address()
-    test = invalid_dash_address("testnet")
+    main = invalid_diabase_address()
+    test = invalid_diabase_address("testnet")
 
-    assert is_valid_dash_address(main) is False
-    assert is_valid_dash_address(main, "mainnet") is False
-    assert is_valid_dash_address(main, "testnet") is False
+    assert is_valid_diabase_address(main) is False
+    assert is_valid_diabase_address(main, "mainnet") is False
+    assert is_valid_diabase_address(main, "testnet") is False
 
-    assert is_valid_dash_address(test) is False
-    assert is_valid_dash_address(test, "mainnet") is False
-    assert is_valid_dash_address(test, "testnet") is False
+    assert is_valid_diabase_address(test) is False
+    assert is_valid_diabase_address(test, "mainnet") is False
+    assert is_valid_diabase_address(test, "testnet") is False
 
 
 def test_deterministic_masternode_elections(current_block_hash, mn_list):
@@ -119,7 +119,7 @@ def test_deterministic_masternode_elections(current_block_hash, mn_list):
 
 
 def test_deterministic_masternode_elections(current_block_hash, mn_list):
-    from dashlib import elect_mn
+    from diabaselib import elect_mn
 
     winner = elect_mn(block_hash=current_block_hash, mnlist=mn_list)
     assert (
@@ -136,7 +136,7 @@ def test_deterministic_masternode_elections(current_block_hash, mn_list):
 
 
 def test_parse_masternode_status_outpoint():
-    from dashlib import parse_masternode_status_outpoint
+    from diabaselib import parse_masternode_status_outpoint
 
     status = mn_status_good()
     outpoint = parse_masternode_status_outpoint(status["outpoint"])
@@ -150,29 +150,29 @@ def test_parse_masternode_status_outpoint():
 
 
 def test_hash_function():
-    import dashlib
+    import diabaselib
 
     sb_data_hex = "7b226576656e745f626c6f636b5f686569676874223a2037323639362c20227061796d656e745f616464726573736573223a2022795965384b77796155753559737753596d42337133727978385854557539793755697c795965384b77796155753559737753596d4233713372797838585455753979375569222c20227061796d656e745f616d6f756e7473223a202232352e37353030303030307c32352e3735303030303030222c202274797065223a20327d"
     sb_hash = "7ae8b02730113382ea75cbb1eecc497c3aa1fdd9e76e875e38617e07fb2cb21a"
 
-    hex_hash = "%x" % dashlib.hashit(sb_data_hex)
+    hex_hash = "%x" % diabaselib.hashit(sb_data_hex)
     assert hex_hash == sb_hash
 
 
 def test_blocks_to_seconds():
-    import dashlib
+    import diabaselib
     from decimal import Decimal
 
     precision = Decimal("0.001")
-    assert Decimal(dashlib.blocks_to_seconds(0)) == Decimal(0.0)
-    assert Decimal(dashlib.blocks_to_seconds(2)).quantize(precision) == Decimal(
+    assert Decimal(diabaselib.blocks_to_seconds(0)) == Decimal(0.0)
+    assert Decimal(diabaselib.blocks_to_seconds(2)).quantize(precision) == Decimal(
         314.4
     ).quantize(precision)
-    assert int(dashlib.blocks_to_seconds(16616)) == 2612035
+    assert int(diabaselib.blocks_to_seconds(16616)) == 2612035
 
 
 def test_parse_raw_votes():
-    import dashlib
+    import diabaselib
     from decimal import Decimal
 
     expected = [
@@ -202,7 +202,7 @@ def test_parse_raw_votes():
         "292bf38f9afe4e7d0ebe630ec9fdf5d364d8440862d2d3b7d935a9c207166f4d": "8a0275f11c71d73cf6e0162dc4f86aa66b33c5a5d8bb2fcdff5a716b44684407-1:1679654979:yes:funding",
     }
 
-    votes = dashlib.parse_raw_votes(sample_raw_votes)
+    votes = diabaselib.parse_raw_votes(sample_raw_votes)
     # sort vote dicts to ensure ordering is the same as the expected output
     # below
     votes = sorted(votes, key=lambda x: x["mn_collateral_outpoint"])
@@ -214,7 +214,7 @@ def test_parse_raw_votes():
         "292bf38f9afe4e7d0ebe630ec9fdf5d364d8440862d2d3b7d935a9c207166f4d": "8a0275f11c71d73cf6e0162dc4f86aa66b33c5a5d8bb2fcdff5a716b44684407-1:1679654979:yes:funding:1",
     }
 
-    votes = dashlib.parse_raw_votes(sample_raw_votes_weights)
+    votes = diabaselib.parse_raw_votes(sample_raw_votes_weights)
     # sort vote dicts to ensure ordering is the same as the expected output
     # below
     votes = sorted(votes, key=lambda x: x["mn_collateral_outpoint"])

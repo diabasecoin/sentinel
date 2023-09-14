@@ -19,7 +19,7 @@ from peewee import (
 import peewee
 import playhouse.signals
 import misc
-import dashd
+import diabased
 from misc import printdbg, is_numeric
 import config
 from bitcoinrpc.authproxy import JSONRPCException
@@ -79,10 +79,10 @@ class GovernanceObject(BaseModel):
     class Meta:
         table_name = "governance_objects"
 
-    # sync dashd gobject list with our local relational DB backend
+    # sync diabased gobject list with our local relational DB backend
     @classmethod
-    def sync(self, dashd):
-        golist = dashd.rpc_command("gobject", "list")
+    def sync(self, diabased):
+        golist = diabased.rpc_command("gobject", "list")
 
         # objects which are removed from the network should be removed from the DB
         try:
@@ -94,7 +94,7 @@ class GovernanceObject(BaseModel):
 
         for item in golist.values():
             try:
-                (go, subobj) = self.import_gobject_from_dashd(dashd, item)
+                (go, subobj) = self.import_gobject_from_diabased(diabased, item)
             except Exception as e:
                 printdbg("Got an error upon import: %s" % e)
 
@@ -106,9 +106,9 @@ class GovernanceObject(BaseModel):
         return query
 
     @classmethod
-    def import_gobject_from_dashd(self, dashd, rec):
+    def import_gobject_from_diabased(self, diabased, rec):
         import decimal
-        import dashlib
+        import diabaselib
         import binascii
         import gobject_json
 
@@ -138,11 +138,11 @@ class GovernanceObject(BaseModel):
         # set object_type in govobj table
         gobj_dict["object_type"] = subclass.govobj_type
 
-        # exclude any invalid model data from dashd...
+        # exclude any invalid model data from diabased...
         valid_keys = subclass.serialisable_fields()
         subdikt = {k: dikt[k] for k in valid_keys if k in dikt}
 
-        # get/create, then sync vote counts from dashd, with every run
+        # get/create, then sync vote counts from diabased, with every run
         govobj, created = self.get_or_create(
             object_hash=object_hash, defaults=gobj_dict
         )
@@ -153,12 +153,12 @@ class GovernanceObject(BaseModel):
             printdbg("govobj updated = %d" % count)
         subdikt["governance_object"] = govobj
 
-        # get/create, then sync payment amounts, etc. from dashd - Dashd is the master
+        # get/create, then sync payment amounts, etc. from diabased - Diabased is the master
         try:
             newdikt = subdikt.copy()
             newdikt["object_hash"] = object_hash
-            if subclass(**newdikt).is_valid(dashd) is False:
-                govobj.vote_delete(dashd)
+            if subclass(**newdikt).is_valid(diabased) is False:
+                govobj.vote_delete(diabased)
                 return (govobj, None)
 
             subobj, created = subclass.get_or_create(
@@ -166,8 +166,8 @@ class GovernanceObject(BaseModel):
             )
         except Exception as e:
             # in this case, vote as delete, and log the vote in the DB
-            printdbg("Got invalid object from dashd! %s" % e)
-            govobj.vote_delete(dashd)
+            printdbg("Got invalid object from diabased! %s" % e)
+            govobj.vote_delete(diabased)
             return (govobj, None)
 
         if created:
@@ -179,17 +179,17 @@ class GovernanceObject(BaseModel):
         # ATM, returns a tuple w/gov attributes and the govobj
         return (govobj, subobj)
 
-    def vote_delete(self, dashd):
+    def vote_delete(self, diabased):
         if not self.voted_on(signal=VoteSignals.delete, outcome=VoteOutcomes.yes):
-            self.vote(dashd, VoteSignals.delete, VoteOutcomes.yes)
+            self.vote(diabased, VoteSignals.delete, VoteOutcomes.yes)
         return
 
     def get_vote_command(self, signal, outcome):
         cmd = ["gobject", "vote-conf", self.object_hash, signal.name, outcome.name]
         return cmd
 
-    def vote(self, dashd, signal, outcome):
-        import dashlib
+    def vote(self, diabased, signal, outcome):
+        import diabaselib
 
         # At this point, will probably never reach here. But doesn't hurt to
         # have an extra check just in case objects get out of sync (people will
@@ -223,10 +223,10 @@ class GovernanceObject(BaseModel):
 
         vote_command = self.get_vote_command(signal, outcome)
         printdbg(" ".join(vote_command))
-        output = dashd.rpc_command(*vote_command)
+        output = diabased.rpc_command(*vote_command)
 
         # extract vote output parsing to external lib
-        voted = dashlib.did_we_vote(output)
+        voted = diabaselib.did_we_vote(output)
 
         if voted:
             printdbg("VOTE success, saving Vote object to database")
@@ -238,14 +238,14 @@ class GovernanceObject(BaseModel):
             ).save()
         else:
             printdbg("VOTE failed, trying to sync with network vote")
-            self.sync_network_vote(dashd, signal)
+            self.sync_network_vote(diabased, signal)
 
-    def sync_network_vote(self, dashd, signal):
+    def sync_network_vote(self, diabased, signal):
         printdbg(
             "\tSyncing network vote for object %s with signal %s"
             % (self.object_hash, signal.name)
         )
-        vote_info = dashd.get_my_gobject_votes(self.object_hash)
+        vote_info = diabased.get_my_gobject_votes(self.object_hash)
         for vdikt in vote_info:
             if vdikt["signal"] != signal.name:
                 continue
@@ -314,12 +314,12 @@ class Proposal(GovernanceClass, BaseModel):
 
     # leave for now so this doesn't break the generic govobj validity check
     # above in the import
-    def is_valid(self, dashd=None):
+    def is_valid(self, diabased=None):
         return True
 
     def is_expired(self, superblockcycle=None):
         from constants import SUPERBLOCK_FUDGE_WINDOW
-        import dashlib
+        import diabaselib
 
         if not superblockcycle:
             raise Exception("Required field superblockcycle missing.")
@@ -331,7 +331,7 @@ class Proposal(GovernanceClass, BaseModel):
         # half the SB cycle, converted to seconds
         # add the fudge_window in seconds, defined elsewhere in Sentinel
         expiration_window_seconds = int(
-            (dashlib.blocks_to_seconds(superblockcycle) / 2) + SUPERBLOCK_FUDGE_WINDOW
+            (diabaselib.blocks_to_seconds(superblockcycle) / 2) + SUPERBLOCK_FUDGE_WINDOW
         )
         printdbg("\texpiration_window_seconds = %s" % expiration_window_seconds)
 
@@ -416,20 +416,20 @@ class Superblock(BaseModel, GovernanceClass):
     class Meta:
         table_name = "superblocks"
 
-    def is_valid(self, dashd=None):
-        import dashlib
+    def is_valid(self, diabased=None):
+        import diabaselib
         import decimal
 
         printdbg("In Superblock#is_valid, for SB: %s" % self.__dict__)
 
         network = "mainnet"
-        if dashd is not None:
-            network = dashd.network()
+        if diabased is not None:
+            network = diabased.network()
 
         # it's a string from the DB...
         addresses = self.payment_addresses.split("|")
         for addr in addresses:
-            if not dashlib.is_valid_dash_address(addr, network):
+            if not diabaselib.is_valid_diabase_address(addr, network):
                 printdbg("\tInvalid address [%s], returning False" % addr)
                 return False
 
@@ -467,9 +467,9 @@ class Superblock(BaseModel, GovernanceClass):
         return True
 
     def hash(self):
-        import dashlib
+        import diabaselib
 
-        return dashlib.hashit(self.serialise())
+        return diabaselib.hashit(self.serialise())
 
     def hex_hash(self):
         return "%x" % self.hash()

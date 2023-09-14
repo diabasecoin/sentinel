@@ -1,6 +1,6 @@
 # Diabase Sentinel
 
-[![Test Status](https://github.com/dashpay/sentinel/actions/workflows/test.yml/badge.svg)](https://github.com/dashpay/sentinel/actions/workflows/test.yml)
+[![Test Status](https://github.com/diabasepay/sentinel/actions/workflows/test.yml/badge.svg)](https://github.com/diabasepay/sentinel/actions/workflows/test.yml)
 
 > An automated governance helper for Diabase Masternodes.
 
@@ -33,13 +33,13 @@ Make sure Python version 3.6.x or above is installed:
 
 Make sure the local DiabaseCore daemon running is at least version 0.15.0.
 
-    $ dashd --version | head -n1
+    $ diabased --version | head -n1
 
 ### Install Sentinel
 
 Clone the Sentinel repo and install Python dependencies.
 
-    $ git clone https://github.com/dashpay/sentinel.git && cd sentinel
+    $ git clone https://github.com/diabasepay/sentinel.git && cd sentinel
     $ virtualenv -p $(which python3) ./venv
     $ ./venv/bin/pip install -r requirements.txt
 
@@ -63,7 +63,7 @@ Test the config by running tests:
 
     $ ./venv/bin/py.test ./test
 
-With all tests passing and crontab setup, Sentinel will stay in sync with dashd and the installation is complete
+With all tests passing and crontab setup, Sentinel will stay in sync with diabased and the installation is complete
 
 ## Configuration
 
@@ -76,7 +76,7 @@ $ RPCUSER=diabase RPCPASSWORD=password RPCHOST=127.0.0.1 RPCPORT=19998 ./venv/bi
 A path to a `diabase.conf` file can be specified in `sentinel.conf`:
 
     # warning: deprecated
-    dash_conf=/path/to/diabase.conf
+    diabase_conf=/path/to/diabase.conf
 
 This is now deprecated and will be removed in a future version. Users are encouraged to update their configurations to use environment variables instead.
 
@@ -93,11 +93,11 @@ To view debug output, set the `SENTINEL_DEBUG` environment variable to anything 
 
 ## Contributing
 
-Please follow the [DiabaseCore guidelines for contributing](https://github.com/dashpay/diabase/blob/master/CONTRIBUTING.md).
+Please follow the [DiabaseCore guidelines for contributing](https://github.com/diabasepay/diabase/blob/master/CONTRIBUTING.md).
 
 Specifically:
 
-* [Contributor Workflow](https://github.com/dashpay/diabase/blob/master/CONTRIBUTING.md#contributor-workflow)
+* [Contributor Workflow](https://github.com/diabasepay/diabase/blob/master/CONTRIBUTING.md#contributor-workflow)
 
     To contribute a patch, the workflow is as follows:
 

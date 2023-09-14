@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", "lib"))
 from misc import printdbg
 
 
-class DashConfig:
+class DiabaseConfig:
     @classmethod
     def slurp_config_file(self, filename):
         # read diabase.conf config but skip commented lines

@@ -57,23 +57,23 @@ def is_database_correctly_configured():
     return configured
 
 
-def has_dash_conf():
+def has_diabase_conf():
     import config
     import io
 
-    valid_dash_conf = False
+    valid_diabase_conf = False
 
-    # ensure dash_conf exists & readable
+    # ensure diabase_conf exists & readable
     #
     # if not, print a message stating that Diabase Core must be installed and
     # configured, including JSONRPC access in diabase.conf
     try:
-        f = io.open(config.dash_conf)
-        valid_dash_conf = True
+        f = io.open(config.diabase_conf)
+        valid_diabase_conf = True
     except IOError as e:
         print(e)
 
-    return valid_dash_conf
+    return valid_diabase_conf
 
 
 def has_required_env_vars():
@@ -102,14 +102,14 @@ def main():
         print("Please ensure correct database configuration.")
         sys.exit(1)
 
-    if not has_required_env_vars() and not has_dash_conf():
+    if not has_required_env_vars() and not has_diabase_conf():
         print(
             "DiabaseCore must be installed and configured, including JSONRPC access in diabase.conf"
         )
         sys.exit(1)
 
     # deprecation warning
-    if not has_required_env_vars() and has_dash_conf():
+    if not has_required_env_vars() and has_diabase_conf():
         print(
             "deprecation warning: JSONRPC credentials should now be set using environment variables. Using diabase.conf will be deprecated in the near future."
         )

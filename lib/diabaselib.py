@@ -13,7 +13,7 @@ from misc import printdbg, epoch2str
 import time
 
 
-def is_valid_dash_address(address, network="mainnet"):
+def is_valid_diabase_address(address, network="mainnet"):
     # Only p2pkh and p2sh addresses are allowed
     # A valid address is a RIPEMD-160 hash which contains 20 bytes
     # Prior to base58 encoding 1 version byte is prepended and
