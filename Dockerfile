@@ -1,5 +1,5 @@
 FROM python:3.9-slim-buster
-LABEL maintainer="Dash Developers <dev@dash.org>"
+LABEL maintainer="Diabase Developers <dev@diabase.org>"
 LABEL description="Dockerised Sentinel"
 
 COPY . /sentinel

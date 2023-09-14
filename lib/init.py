@@ -65,8 +65,8 @@ def has_dash_conf():
 
     # ensure dash_conf exists & readable
     #
-    # if not, print a message stating that Dash Core must be installed and
-    # configured, including JSONRPC access in dash.conf
+    # if not, print a message stating that Diabase Core must be installed and
+    # configured, including JSONRPC access in diabase.conf
     try:
         f = io.open(config.dash_conf)
         valid_dash_conf = True
@@ -104,14 +104,14 @@ def main():
 
     if not has_required_env_vars() and not has_dash_conf():
         print(
-            "DashCore must be installed and configured, including JSONRPC access in dash.conf"
+            "DiabaseCore must be installed and configured, including JSONRPC access in diabase.conf"
         )
         sys.exit(1)
 
     # deprecation warning
     if not has_required_env_vars() and has_dash_conf():
         print(
-            "deprecation warning: JSONRPC credentials should now be set using environment variables. Using dash.conf will be deprecated in the near future."
+            "deprecation warning: JSONRPC credentials should now be set using environment variables. Using diabase.conf will be deprecated in the near future."
         )
 
 

@@ -116,7 +116,7 @@ def main():
 
     # print version and return if "--version" is an argument
     if options.version:
-        print("Dash Sentinel v%s" % config.sentinel_version)
+        print("Diabase Sentinel v%s" % config.sentinel_version)
         return
 
     # check dashd connectivity
@@ -202,7 +202,7 @@ def process_args():
         "-v",
         "--version",
         action="store_true",
-        help="Print the version (Dash Sentinel vX.X.X) and exit",
+        help="Print the version (Diabase Sentinel vX.X.X) and exit",
     )
 
     args = parser.parse_args()

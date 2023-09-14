@@ -120,7 +120,7 @@ class DashDaemon:
         return self.govinfo["superblockcycle"]
 
     def network(self):
-        # from dash/src/chainparamsbase.cpp
+        # from diabase/src/chainparamsbase.cpp
         # CBaseChainParams::MAIN = "main";
         # CBaseChainParams::TESTNET = "test";
         # CBaseChainParams::DEVNET = "devnet";

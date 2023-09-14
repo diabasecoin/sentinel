@@ -1,10 +1,10 @@
-# Dash Sentinel
+# Diabase Sentinel
 
 [![Test Status](https://github.com/dashpay/sentinel/actions/workflows/test.yml/badge.svg)](https://github.com/dashpay/sentinel/actions/workflows/test.yml)
 
-> An automated governance helper for Dash Masternodes.
+> An automated governance helper for Diabase Masternodes.
 
-Sentinel is an autonomous agent for persisting, processing and automating Dash governance objects and tasks. It is a Python application which runs alongside the DashCore instance on each Dash Masternode.
+Sentinel is an autonomous agent for persisting, processing and automating Diabase governance objects and tasks. It is a Python application which runs alongside the DiabaseCore instance on each Diabase Masternode.
 
 ## Table of Contents
 - [Install](#install)
@@ -31,7 +31,7 @@ Make sure Python version 3.6.x or above is installed:
 
     python3 --version
 
-Make sure the local DashCore daemon running is at least version 0.15.0.
+Make sure the local DiabaseCore daemon running is at least version 0.15.0.
 
     $ dashd --version | head -n1
 
@@ -70,13 +70,13 @@ With all tests passing and crontab setup, Sentinel will stay in sync with dashd 
 Configuration is done via environment variables. Example:
 
 ```sh
-$ RPCUSER=dash RPCPASSWORD=password RPCHOST=127.0.0.1 RPCPORT=19998 ./venv/bin/python bin/sentinel.py
+$ RPCUSER=diabase RPCPASSWORD=password RPCHOST=127.0.0.1 RPCPORT=19998 ./venv/bin/python bin/sentinel.py
 ```
 
-A path to a `dash.conf` file can be specified in `sentinel.conf`:
+A path to a `diabase.conf` file can be specified in `sentinel.conf`:
 
     # warning: deprecated
-    dash_conf=/path/to/dash.conf
+    dash_conf=/path/to/diabase.conf
 
 This is now deprecated and will be removed in a future version. Users are encouraged to update their configurations to use environment variables instead.
 
@@ -93,11 +93,11 @@ To view debug output, set the `SENTINEL_DEBUG` environment variable to anything 
 
 ## Contributing
 
-Please follow the [DashCore guidelines for contributing](https://github.com/dashpay/dash/blob/master/CONTRIBUTING.md).
+Please follow the [DiabaseCore guidelines for contributing](https://github.com/dashpay/diabase/blob/master/CONTRIBUTING.md).
 
 Specifically:
 
-* [Contributor Workflow](https://github.com/dashpay/dash/blob/master/CONTRIBUTING.md#contributor-workflow)
+* [Contributor Workflow](https://github.com/dashpay/diabase/blob/master/CONTRIBUTING.md#contributor-workflow)
 
     To contribute a patch, the workflow is as follows:
 
@@ -119,4 +119,4 @@ Please use `black` to format code automatically before opening a PR:
 
 ## License
 
-Released under the MIT license, under the same terms as DashCore itself. See [LICENSE](LICENSE) for more info.
+Released under the MIT license, under the same terms as DiabaseCore itself. See [LICENSE](LICENSE) for more info.
