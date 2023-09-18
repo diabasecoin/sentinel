@@ -31,7 +31,7 @@ Make sure Python version 3.6.x or above is installed:
 
     python3 --version
 
-Make sure the local DiabaseCore daemon running is at least version 0.15.0.
+Make sure the local DiabaseCore daemon running is at least version 0.01.0.5
 
     $ diabased --version | head -n1
 
