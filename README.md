@@ -1,6 +1,6 @@
 # Diabase Sentinel
 
-[![Test Status](https://github.com/diabasepay/sentinel/actions/workflows/test.yml/badge.svg)](https://github.com/diabasepay/sentinel/actions/workflows/test.yml)
+[![Test Status](https://github.com/diabasecoin/sentinel/actions/workflows/test.yml/badge.svg)](https://github.com/diabasepay/sentinel/actions/workflows/test.yml)
 
 > An automated governance helper for Diabase Masternodes.
 
@@ -39,7 +39,7 @@ Make sure the local DiabaseCore daemon running is at least version 0.15.0.
 
 Clone the Sentinel repo and install Python dependencies.
 
-    $ git clone https://github.com/diabasepay/sentinel.git && cd sentinel
+    $ git clone https://github.com/diabasecoin/sentinel.git && cd sentinel
     $ virtualenv -p $(which python3) ./venv
     $ ./venv/bin/pip install -r requirements.txt
 
@@ -97,7 +97,7 @@ Please follow the [DiabaseCore guidelines for contributing](https://github.com/d
 
 Specifically:
 
-* [Contributor Workflow](https://github.com/diabasepay/diabase/blob/master/CONTRIBUTING.md#contributor-workflow)
+* [Contributor Workflow](https://github.com/diabasecoin/diabase/blob/master/CONTRIBUTING.md#contributor-workflow)
 
     To contribute a patch, the workflow is as follows:
 
